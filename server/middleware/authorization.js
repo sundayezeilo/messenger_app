@@ -1,8 +1,7 @@
 const Conversation = require('../db/models/conversation');
 
 const isAuthorizedToSendToConv = async (req, res, next) => {
-  const { recipientId, text, conversationId, sender } = req.body;
-
+  const { conversationId } = req.body;
   const currentUser = req.user;
 
   if (!currentUser) return res.sendStatus(401);
