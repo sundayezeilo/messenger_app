@@ -5,18 +5,19 @@ const { isAuthorizedToSendToConv } = require('../../middleware/authorization');
 
 router.post('/', isAuthorizedToSendToConv, async (req, res, next) => {
   try {
-    const senderId = req.user.id;
-    const { recipientId, text, conversationId, sender } = req.body;
+    const sender = req.user;
+    const { recipientId, text, conversationId } = req.body;
     let conversation;
 
     if (!conversationId) {
-      conversation = await Conversation.findConversation(senderId, recipientId);
+      conversation = await Conversation.findConversation(sender.id, recipientId);
 
       if (!conversation) {
         conversation = await Conversation.create({
-          user1Id: senderId,
+          user1Id: sender.id,
           user2Id: recipientId,
         });
+
         if (onlineUsers.includes(sender.id)) {
           sender.online = true;
         }
@@ -24,7 +25,7 @@ router.post('/', isAuthorizedToSendToConv, async (req, res, next) => {
     }
 
     const message = await Message.create({
-      senderId,
+      senderId: sender.id,
       text,
       conversationId: conversationId || conversation.id,
     });
