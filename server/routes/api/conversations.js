@@ -23,7 +23,7 @@ router.get('/', async (req, res, next) => {
       attributes: ['id'],
       order: [[Message, 'createdAt', 'ASC']],
       include: [
-        { model: Message, order: ['createdAt', 'ASC'] },
+        { model: Message },
         {
           model: User,
           as: 'user1',
@@ -74,7 +74,7 @@ router.get('/', async (req, res, next) => {
         convoJSON.messages[convoJSON.messages.length - 1].text;
       conversations[i] = convoJSON;
     }
-    console.log(conversations.map((val) => val.messages));
+
     res.json(conversations);
   } catch (error) {
     next(error);
@@ -96,7 +96,7 @@ router.put('/:convId', async (req, res, next) => {
       where: { id: conversationId },
       attributes: ['id'],
       order: [[Message, 'createdAt', 'DESC']],
-      include: [{ model: Message, order: ['createdAt', 'DESC'] }],
+      include: [{ model: Message }],
     });
 
     const lastMsg = conversation
@@ -117,7 +117,7 @@ router.put('/:convId', async (req, res, next) => {
       }
     );
 
-    res.sendStatus(204);
+    return res.sendStatus(204);
   } catch (err) {
     next(err);
   }
