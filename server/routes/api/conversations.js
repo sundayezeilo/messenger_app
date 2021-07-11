@@ -23,7 +23,7 @@ router.get('/', async (req, res, next) => {
       attributes: ['id'],
       order: [[Message, 'createdAt', 'ASC']],
       include: [
-        { model: Message, order: ['createdAt', 'DESC'] },
+        { model: Message, order: ['createdAt', 'ASC'] },
         {
           model: User,
           as: 'user1',
@@ -74,10 +74,52 @@ router.get('/', async (req, res, next) => {
         convoJSON.messages[convoJSON.messages.length - 1].text;
       conversations[i] = convoJSON;
     }
-
+    console.log(conversations.map((val) => val.messages));
     res.json(conversations);
   } catch (error) {
     next(error);
+  }
+});
+
+router.put('/:convId', async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    if (!currentUser) return res.sendStatus(401);
+
+    const conversationId = req.params.convId;
+
+    if (!conversationId) {
+      return res.sendStatus(400);
+    }
+
+    const conversation = await Conversation.findOne({
+      where: { id: conversationId },
+      attributes: ['id'],
+      order: [[Message, 'createdAt', 'DESC']],
+      include: [{ model: Message, order: ['createdAt', 'DESC'] }],
+    });
+
+    const lastMsg = conversation
+      ? conversation.toJSON().messages[0]
+      : res.sendStatus(404);
+
+    if (lastMsg.senderId === currentUser.id) {
+      return res.sendStatus(403);
+    }
+
+    await Message.update(
+      { recipientRead: true },
+      {
+        where: {
+          recipientRead: false,
+          conversationId,
+        },
+      }
+    );
+
+    res.sendStatus(204);
+  } catch (err) {
+    next(err);
   }
 });
 

@@ -10,7 +10,10 @@ router.post('/', isAuthorizedToSendToConv, async (req, res, next) => {
     let conversation;
 
     if (!conversationId) {
-      conversation = await Conversation.findConversation(sender.id, recipientId);
+      conversation = await Conversation.findConversation(
+        sender.id,
+        recipientId
+      );
 
       if (!conversation) {
         conversation = await Conversation.create({
