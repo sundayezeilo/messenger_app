@@ -81,7 +81,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.put('/:convId', async (req, res, next) => {
+router.patch('/:convId', async (req, res, next) => {
   try {
     const currentUser = req.user;
     if (!currentUser) return res.sendStatus(401);
@@ -95,8 +95,8 @@ router.put('/:convId', async (req, res, next) => {
     const conversation = await Conversation.findOne({
       where: { id: conversationId },
       attributes: ['id'],
-      order: [[Message, 'createdAt', 'DESC']],
       include: [{ model: Message }],
+      order: [[Message, 'createdAt', 'DESC']],
     });
 
     const lastMsg = conversation
