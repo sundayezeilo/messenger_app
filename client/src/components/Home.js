@@ -32,10 +32,6 @@ class Home extends Component {
 
   componentDidMount() {
     this.props.fetchConversations();
-
-    setInterval(() => {
-      this.props.fetchConversations();
-    }, 3000);
   }
 
   handleLogout = async () => {

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Search, Chat, CurrentUser } from "./index.js";
+import { fetchConversations } from "../../store/utils/thunkCreators";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -20,9 +21,16 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Sidebar = (props) => {
+
   const classes = useStyles();
   const conversations = props.conversations || [];
   const { handleChange, searchTerm } = props;
+
+  useEffect(() => {
+    setInterval(() => {
+      props.fetchConversations();
+    }, 3000);
+  })
 
   return (
     <Box className={classes.root}>
@@ -44,4 +52,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Sidebar);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchConversations: () => {
+      dispatch(fetchConversations());
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
