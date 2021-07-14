@@ -3,7 +3,7 @@ import { Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Search, Chat, CurrentUser } from "./index.js";
-import { fetchConversations } from "../../store/utils/thunkCreators";
+import { fetchConversations } from '../../store/utils/thunkCreators'
 
 const useStyles = makeStyles(() => ({
   root: {
