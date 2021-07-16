@@ -31,7 +31,7 @@ const Sidebar = (props) => {
     }, 3000);
 
     return () => {
-      clearTimeout(timer1);
+      clearInterval(timer1);
     };
   });
 
