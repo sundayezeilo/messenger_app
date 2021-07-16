@@ -7,10 +7,16 @@ router.post('/', isAuthorizedToSendToConv, async (req, res, next) => {
   try {
     const sender = req.user;
     const { recipientId, text, conversationId } = req.body;
+
+    if (!text) return res.sendStatus(400);
+
     let conversation;
 
     if (!conversationId) {
-      conversation = await Conversation.findConversation(sender.id, recipientId);
+      conversation = await Conversation.findConversation(
+        sender.id,
+        recipientId
+      );
 
       if (!conversation) {
         conversation = await Conversation.create({

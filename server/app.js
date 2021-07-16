@@ -29,7 +29,7 @@ app.use(function (req, res, next) {
       User.findOne({
         where: { id: decoded.id },
       }).then((user) => {
-        req.user = user;    //  what happens here if no user is found with the given id? ---fix
+        req.user = user;
         return next();
       });
     });
