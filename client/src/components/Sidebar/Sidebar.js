@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
@@ -24,16 +24,6 @@ const Sidebar = (props) => {
   const classes = useStyles();
   const conversations = props.conversations || [];
   const { handleChange, searchTerm } = props;
-
-  useEffect(() => {
-    const timer1 = setInterval(() => {
-      props.fetchConversations();
-    }, 3000);
-
-    return () => {
-      clearInterval(timer1);
-    };
-  });
 
   return (
     <Box className={classes.root}>

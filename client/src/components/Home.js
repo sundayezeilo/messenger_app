@@ -34,8 +34,8 @@ class Home extends Component {
     this.props.fetchConversations();
   }
 
-  handleLogout = async () => {
-    await this.props.logout(this.props.user.id);
+  handleLogout = () => {
+    this.props.logout(this.props.user.id);
   };
 
   render() {
