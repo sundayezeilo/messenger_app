@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
     color: '#FFF',
     marginRight: 20,
     borderRadius: '50%',
-    backgroundColor: '#DC004E',
+    backgroundColor: '#0290ff',
   },
 }));
 
@@ -23,7 +23,6 @@ export default function BadgeUnread(props) {
       <Badge
         classes={{ badge: `${classes.badge}` }}
         badgeContent={props.unread.length}
-        color='secondary'
       />
     </Box>
   );
