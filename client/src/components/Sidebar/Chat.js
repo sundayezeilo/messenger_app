@@ -23,8 +23,13 @@ const styles = {
 
 class Chat extends Component {
   handleClick = (conversation) => {
+    const { messages } = conversation;
+
     this.props.setActiveChat(conversation.otherUser.username);
-    this.props.updateReadStatus(conversation.id);
+
+    if (!messages[messages.length - 1].recipientRead) {
+      this.props.updateReadStatus(conversation.id);
+    }
   };
 
   render() {
@@ -32,8 +37,8 @@ class Chat extends Component {
     const otherUser = this.props.conversation.otherUser;
     return (
       <Box
-        onClick={() => this.handleClick(this.props.conversation)}
         className={classes.root}
+        onClick={() => this.handleClick(this.props.conversation)}
       >
         <BadgeAvatar
           photoUrl={otherUser.photoUrl}

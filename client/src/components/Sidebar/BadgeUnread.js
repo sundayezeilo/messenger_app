@@ -6,10 +6,10 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(() => ({
   badge: {
     fontSize: 20,
-    minHeight: 30,
-    minWidth: 30,
+    minHeight: 25,
+    minWidth: 25,
     color: '#FFF',
-    marginRight: 15,
+    marginRight: 20,
     borderRadius: '50%',
     backgroundColor: '#DC004E',
   },
