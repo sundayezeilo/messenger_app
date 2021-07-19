@@ -27,7 +27,7 @@ class Chat extends Component {
 
     this.props.setActiveChat(conversation.otherUser.username);
 
-    if (!messages[messages.length - 1].recipientRead) {
+    if (messages?.length && !messages[messages.length - 1].recipientRead) {
       this.props.updateReadStatus(conversation.id);
     }
   };
