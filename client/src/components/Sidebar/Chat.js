@@ -35,6 +35,11 @@ class Chat extends Component {
   render() {
     const { classes } = this.props;
     const otherUser = this.props.conversation.otherUser;
+    
+    const unread = this.props.conversation.messages.filter(
+      (msg) => !msg.recipientRead && msg.senderId !== this.props.user.id
+    );
+
     return (
       <Box
         className={classes.root}
@@ -46,12 +51,8 @@ class Chat extends Component {
           online={otherUser.online}
           sidebar={true}
         />
-        <ChatContent conversation={this.props.conversation} />
-        <BadgeUnread
-          unread={this.props.conversation.messages.filter(
-            (msg) => !msg.recipientRead && msg.senderId !== this.props.user.id
-          )}
-        />
+        <ChatContent conversation={this.props.conversation} unread={unread.length} />
+        <BadgeUnread unread={unread} />
       </Box>
     );
   }

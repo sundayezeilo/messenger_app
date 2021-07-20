@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
     color: '#FFF',
     marginRight: 20,
     borderRadius: '50%',
-    backgroundColor: '#0290ff',
+    backgroundColor: '#3A8DFF',
   },
 }));
 
