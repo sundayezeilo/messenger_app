@@ -3,7 +3,6 @@ import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Search, Chat, CurrentUser } from './index.js';
-import { fetchConversations } from '../../store/utils/thunkCreators';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -52,12 +51,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchConversations: () => {
-      dispatch(fetchConversations());
-    },
-  };
-};
+export default connect(mapStateToProps)(Sidebar);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
