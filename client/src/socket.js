@@ -6,7 +6,11 @@ import {
   addOnlineUser,
 } from "./store/conversations";
 
-const socket = io(window.location.origin);
+const socket = io({
+  auth: {
+    token: localStorage.getItem('messenger-token')
+  }
+});;
 
 socket.on("connect", () => {
   console.log("connected to server");

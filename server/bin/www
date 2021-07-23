@@ -31,6 +31,9 @@ const server = http.createServer(app);
 
 const io = require('socket.io')(server);
 const sockets = require('../socketConnection');
+const authenticateConnection = require('../middleware/socketAuth');
+
+io.use(authenticateConnection);
 
 io.on('connection', (socket) => {
   sockets['socket'] = socket;
