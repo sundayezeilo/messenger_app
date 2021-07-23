@@ -81,4 +81,46 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.patch('/:convId', async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    if (!currentUser) return res.sendStatus(401);
+
+    const conversationId = req.params.convId;
+
+    if (!conversationId) {
+      return res.sendStatus(400);
+    }
+
+    const conversation = await Conversation.findOne({
+      where: { id: conversationId },
+      attributes: ['id'],
+      include: [{ model: Message }],
+      order: [[Message, 'createdAt', 'DESC']],
+    });
+
+    const lastMsg = conversation
+      ? conversation.toJSON().messages[0]
+      : res.sendStatus(404);
+
+    if (lastMsg.senderId === currentUser.id) {
+      return res.sendStatus(403);
+    }
+
+    await Message.update(
+      { recipientRead: true },
+      {
+        where: {
+          recipientRead: false,
+          conversationId,
+        },
+      }
+    );
+
+    return res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

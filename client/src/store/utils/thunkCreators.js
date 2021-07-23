@@ -5,10 +5,12 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
+  readMessages,
 } from '../conversations';
 import { gotUser, setFetchingStatus } from '../user';
 
 axios.interceptors.request.use(async function (config) {
+  // Needs update!!! localStorage.getItem is not async
   const token = await localStorage.getItem('messenger-token');
   config.headers['x-access-token'] = token;
 
@@ -115,5 +117,16 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
     dispatch(setSearchedUsers(data));
   } catch (error) {
     console.error(error);
+  }
+};
+
+// UPDATE MESSAGE READ STATUS THUNK CREATORS
+
+export const updateMsgReadStatus = (conversationId) => async (dispatch) => {
+  try {
+    await axios.patch(`/api/conversations/${conversationId}`);
+    dispatch(readMessages(conversationId));
+  } catch (error) {
+    console.error('error');
   }
 };
