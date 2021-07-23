@@ -1,2 +1,2 @@
-const onlineUsers = [];
+const onlineUsers = {};
 module.exports = onlineUsers;
