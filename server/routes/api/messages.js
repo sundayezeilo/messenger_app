@@ -34,10 +34,12 @@ router.post('/', isAuthorizedToSendToConv, async (req, res, next) => {
       conversationId: conversationId || conversation.id,
     });
 
-    onlineUsers[recipientId].emit('new-message', {
-      message,
-      sender,
-    });
+    if(onlineUsers[recipientId]) {
+      onlineUsers[recipientId].emit('new-message', {
+        message,
+        sender,
+      });
+    }
 
     res.json({ message, sender });
   } catch (error) {
