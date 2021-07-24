@@ -10,7 +10,7 @@ const socket = io({
   auth: {
     token: localStorage.getItem('messenger-token')
   }
-});;
+});
 
 socket.on("connect", () => {
   console.log("connected to server");
@@ -24,9 +24,7 @@ socket.on("connect", () => {
   });
 
   socket.on("new-message", ({ message, sender }) => {
-    if(message.senderId !== store.getState().user.id) {
-      store.dispatch(setNewMessage(message, sender));
-    }
+    store.dispatch(setNewMessage(message, sender));
   });
 });
 

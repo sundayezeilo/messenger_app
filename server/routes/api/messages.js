@@ -34,7 +34,7 @@ router.post('/', isAuthorizedToSendToConv, async (req, res, next) => {
       conversationId: conversationId || conversation.id,
     });
 
-    sockets['socket'].broadcast.emit('new-message', {
+    onlineUsers[recipientId].emit('new-message', {
       message,
       sender,
     });

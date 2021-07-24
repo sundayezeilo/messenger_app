@@ -79,7 +79,7 @@ router.post("/login", async (req, res, next) => {
 router.delete("/logout", (req, res, next) => {
   const { id } = req.user;
   delete onlineUsers[id];
-  sockets['socket'].broadcast.emit('remove-offline-user', id);
+  sockets[0].broadcast.emit('remove-offline-user', id);
   
   res.sendStatus(204);
 });
