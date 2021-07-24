@@ -13,10 +13,11 @@ const authenticateConnection = async (socket, next) => {
       process.env.SESSION_SECRET
     );
 
-    await User.findOne({
+    const user = await User.findOne({
       where: { id: decoded.id },
     });
-
+    if(!user) next(new Error('authentication failed!'));
+    socket.user = user;
     next();
   } catch {
     next(new Error('authentication failed!'));

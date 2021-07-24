@@ -36,13 +36,9 @@ const authenticateConnection = require('../middleware/socketAuth');
 io.use(authenticateConnection);
 
 io.on('connection', (socket) => {
-  sockets['socket'] = socket;
-
-  socket.on('go-online', (id) => {
-    onlineUsers[id] = id;
-    // send the user who just went online to everyone else who is already online
-    socket.broadcast.emit('add-online-user', id);
-  });
+  sockets[0] = socket;
+  onlineUsers[socket.user.id] = socket;
+  socket.broadcast.emit('add-online-user', socket.user.id);
 });
 
 sessionStore
