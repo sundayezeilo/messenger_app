@@ -30,9 +30,12 @@ const Chat = (props) => {
 
     dispatch(setActiveChat(conversation.otherUser.username));
 
-    if (messages?.length && !messages[messages.length - 1].recipientRead) {
+    if (!messages?.length) return;
+
+    const mostRecentMsg = messages[messages.length - 1];
+
+    if (!mostRecentMsg.recipientRead && mostRecentMsg.senderId.id !== user.id)
       dispatch(updateMsgReadStatus(conversation.id));
-    }
   };
 
   const { classes } = props;
@@ -59,4 +62,4 @@ const Chat = (props) => {
   );
 };
 
-export default (withStyles(styles)(Chat));
+export default withStyles(styles)(Chat);

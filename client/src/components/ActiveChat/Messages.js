@@ -11,9 +11,12 @@ const Messages = (props) => {
   const dispatch = useDispatch();
 
   const handleMouseOver = (id) => {
-    if (!messages[messages.length - 1].recipientRead) {
+    if (!messages?.length) return;
+
+    const mostRecentMsg = messages[messages.length - 1];
+
+    if (!mostRecentMsg.recipientRead && mostRecentMsg.senderId.id !== userId)
       dispatch(updateMsgReadStatus(id));
-    }
   };
 
   return (
