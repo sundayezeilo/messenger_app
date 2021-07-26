@@ -27,11 +27,12 @@ const Home = (props) => {
 
   useEffect(() => {
     dispatch(fetchConversations());
-    return () => {
-      setIsLoggedIn(true);
-    };    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setIsLoggedIn(true);
+  }, [user?.id]);
 
   const { classes } = props;
   if (!user.id) {
