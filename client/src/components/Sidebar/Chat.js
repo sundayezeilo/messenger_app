@@ -34,7 +34,7 @@ const Chat = (props) => {
 
     const mostRecentMsg = messages[messages.length - 1];
 
-    if (!mostRecentMsg.recipientRead && mostRecentMsg.senderId.id !== user.id)
+    if (!mostRecentMsg.recipientRead && mostRecentMsg.senderId !== user.id)
       dispatch(updateMsgReadStatus(conversation.id));
   };
 

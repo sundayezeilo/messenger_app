@@ -15,7 +15,7 @@ const Messages = (props) => {
 
     const mostRecentMsg = messages[messages.length - 1];
 
-    if (!mostRecentMsg.recipientRead && mostRecentMsg.senderId.id !== userId)
+    if (!mostRecentMsg.recipientRead && mostRecentMsg.senderId !== userId)
       dispatch(updateMsgReadStatus(id));
   };
 
