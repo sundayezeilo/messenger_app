@@ -40,6 +40,8 @@ io.on('connection', (socket) => {
     sockets[0] = socket;
     onlineUsers[socket.user.id] = socket;
     socket.broadcast.emit('add-online-user', socket.user.id);
+  } else {
+    socket.disconnect();
   }
 });
 
