@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Box } from '@material-ui/core';
 import { BadgeAvatar, ChatContent } from '../Sidebar';
 import { withStyles } from '@material-ui/core/styles';
 import { setActiveChat } from '../../store/activeConversation';
 import { updateMsgReadStatus } from '../../store/utils/thunkCreators';
 import BadgeUnread from './BadgeUnread';
-import { connect } from 'react-redux';
 
 const styles = {
   root: {
@@ -21,62 +21,45 @@ const styles = {
   },
 };
 
-class Chat extends Component {
-  handleClick = (conversation) => {
+const Chat = (props) => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  const handleClick = (conversation) => {
     const { messages } = conversation;
 
-    this.props.setActiveChat(conversation.otherUser.username);
+    dispatch(setActiveChat(conversation.otherUser.username));
 
-    if (messages?.length && !messages[messages.length - 1].recipientRead) {
-      this.props.updateReadStatus(conversation.id);
-    }
+    if (!messages?.length) return;
+
+    const mostRecentMsg = messages[messages.length - 1];
+
+    if (!mostRecentMsg.recipientRead && mostRecentMsg.senderId !== user.id)
+      dispatch(updateMsgReadStatus(conversation.id));
   };
 
-  render() {
-    const { classes } = this.props;
-    const otherUser = this.props.conversation.otherUser;
-    
-    const unread = this.props.conversation.messages.filter(
-      (msg) => !msg.recipientRead && msg.senderId !== this.props.user.id
-    );
+  const { classes } = props;
+  const otherUser = props.conversation.otherUser;
 
-    return (
-      <Box
-        className={classes.root}
-        onClick={() => this.handleClick(this.props.conversation)}
-      >
-        <BadgeAvatar
-          photoUrl={otherUser.photoUrl}
-          username={otherUser.username}
-          online={otherUser.online}
-          sidebar={true}
-        />
-        <ChatContent conversation={this.props.conversation} unread={unread.length} />
-        <BadgeUnread unread={unread} />
-      </Box>
-    );
-  }
-}
+  const unread = props.conversation.messages.filter(
+    (msg) => !msg.recipientRead && msg.senderId !== user.id
+  );
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  };
+  return (
+    <Box
+      className={classes.root}
+      onClick={() => handleClick(props.conversation)}
+    >
+      <BadgeAvatar
+        photoUrl={otherUser.photoUrl}
+        username={otherUser.username}
+        online={otherUser.online}
+        sidebar={true}
+      />
+      <ChatContent conversation={props.conversation} unread={unread.length} />
+      <BadgeUnread unread={unread} />
+    </Box>
+  );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setActiveChat: (id) => {
-      dispatch(setActiveChat(id));
-    },
-
-    updateReadStatus: (convId) => {
-      dispatch(updateMsgReadStatus(convId));
-    },
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(Chat));
+export default withStyles(styles)(Chat);
