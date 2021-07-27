@@ -5,10 +5,12 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
+  readMessages,
 } from '../conversations';
 import { gotUser, setFetchingStatus } from '../user';
 
 axios.interceptors.request.use(async function (config) {
+  // Needs update!!! localStorage.getItem is not async
   const token = await localStorage.getItem('messenger-token');
   config.headers['x-access-token'] = token;
 
@@ -61,7 +63,6 @@ export const logout = (id) => async (dispatch) => {
     await axios.delete('/auth/logout');
     await localStorage.removeItem('messenger-token');
     dispatch(gotUser({}));
-    socket.emit('logout', id);
   } catch (error) {
     console.error(error);
   }
@@ -83,14 +84,6 @@ const saveMessage = async (body) => {
   return data;
 };
 
-const sendMessage = (data, body) => {
-  socket.emit('new-message', {
-    message: data.message,
-    recipientId: body.recipientId,
-    sender: data.sender,
-  });
-};
-
 // message format to send: {recipientId, text, conversationId}
 // conversationId will be set to null if its a brand new conversation
 export const postMessage = (body) => async (dispatch) => {
@@ -103,7 +96,6 @@ export const postMessage = (body) => async (dispatch) => {
       dispatch(setNewMessage(data.message));
     }
 
-    sendMessage(data, body);
   } catch (error) {
     console.error(error);
   }
@@ -115,5 +107,16 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
     dispatch(setSearchedUsers(data));
   } catch (error) {
     console.error(error);
+  }
+};
+
+// UPDATE MESSAGE READ STATUS THUNK CREATORS
+
+export const updateMsgReadStatus = (conversationId) => async (dispatch) => {
+  try {
+    await axios.patch(`/api/conversations/${conversationId}`);
+    dispatch(readMessages(conversationId));
+  } catch (error) {
+    console.error('error');
   }
 };

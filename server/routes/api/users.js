@@ -25,7 +25,7 @@ router.get("/:username", async (req, res, next) => {
     // add online status to each user that is online
     for (let i = 0; i < users.length; i++) {
       const userJSON = users[i].toJSON();
-      if (onlineUsers.includes(userJSON.id)) {
+      if (onlineUsers[userJSON.id]) {
         userJSON.online = true;
       }
       users[i] = userJSON;

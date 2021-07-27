@@ -20,3 +20,4 @@ yarn-error.log*
 
 server/.env
 todos.txt
+screenshots/

@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const { User } = require("../../db/models");
 const jwt = require("jsonwebtoken");
+const onlineUsers = require('../../onlineUsers');
+const sockets = require('../../socketConnection');
 
 router.post("/register", async (req, res, next) => {
   try {
@@ -75,6 +77,10 @@ router.post("/login", async (req, res, next) => {
 });
 
 router.delete("/logout", (req, res, next) => {
+  const { id } = req.user;
+  delete onlineUsers[id];
+  sockets[0].broadcast.emit('remove-offline-user', id);
+  
   res.sendStatus(204);
 });
 
