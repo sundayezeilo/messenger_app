@@ -9,6 +9,7 @@ const useStyles = makeStyles(() => ({
     width: 44
   },
   badge: {
+    fontSize: 30,
     height: 13,
     width: 13,
     borderRadius: "50%",
@@ -33,7 +34,8 @@ const UserAvatar = (props) => {
         classes={{ badge: `${classes.badge} ${online && classes.online}` }}
         variant="dot"
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        overlap="circle">
+        overlap="circle"
+      >          
         <Avatar alt={username} src={photoUrl} className={classes.profilePic}></Avatar>
       </Badge>
     </Box>

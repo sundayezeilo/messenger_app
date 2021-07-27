@@ -2,6 +2,7 @@ const router = require('express').Router();
 const onlineUsers = require('../../onlineUsers');
 const { Conversation, Message } = require('../../db/models');
 const { isAuthorizedToSendToConv } = require('../../middleware/authorization');
+const sockets = require('../../socketConnection');
 
 router.post('/', isAuthorizedToSendToConv, async (req, res, next) => {
   try {
@@ -21,7 +22,7 @@ router.post('/', isAuthorizedToSendToConv, async (req, res, next) => {
           user2Id: recipientId,
         });
 
-        if (onlineUsers.includes(sender.id)) {
+        if (onlineUsers[sender.id]) {
           sender.online = true;
         }
       }
@@ -32,6 +33,13 @@ router.post('/', isAuthorizedToSendToConv, async (req, res, next) => {
       text,
       conversationId: conversationId || conversation.id,
     });
+
+    if(onlineUsers[recipientId]) {
+      onlineUsers[recipientId].emit('new-message', {
+        message,
+        sender,
+      });
+    }
 
     res.json({ message, sender });
   } catch (error) {
