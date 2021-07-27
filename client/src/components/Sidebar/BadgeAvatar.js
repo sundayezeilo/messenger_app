@@ -35,7 +35,6 @@ const UserAvatar = (props) => {
         variant="dot"
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         overlap="circle"
-        badgeContent={4}
       >          
         <Avatar alt={username} src={photoUrl} className={classes.profilePic}></Avatar>
       </Badge>

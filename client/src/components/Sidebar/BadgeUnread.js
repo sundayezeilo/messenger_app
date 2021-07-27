@@ -3,15 +3,15 @@ import { Box, Badge } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   badge: {
     fontSize: 20,
     minHeight: 25,
     minWidth: 25,
     color: '#FFF',
-    marginRight: 20,
+    marginRight: theme.spacing(2.5),
     borderRadius: '50%',
-    backgroundColor: '#0290ff',
+    backgroundColor: '#3A8DFF',
   },
 }));
 
